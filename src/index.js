@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import rutasUsuario from "./usuario/usuario.route.js";
 import mongoose from "mongoose";
+app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
