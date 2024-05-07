@@ -3,8 +3,10 @@ import argon2 from "argon2";
 
 const usuarioSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
+    cedula: { type: String, required: true, unique: true },
     correo: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    direccion: { type: String, required: true },
 },
     {
         versionKey: false,

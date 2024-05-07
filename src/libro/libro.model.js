@@ -8,7 +8,11 @@ const libroSchema = new mongoose.Schema({
     autor: { type: String },
     precio: { type: mongoose.Types.Decimal128 },
     usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true }
-});
+},
+    {
+        versionKey: false,
+        timestamps: true
+    });
 
 const Libro = mongoose.model('Libro', libroSchema);
 export default Libro;

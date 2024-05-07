@@ -1,8 +1,8 @@
 
 import Usuario from './usuario.model.js';
 
-async function getUsuario(usuario) {
-    return await Usuario.findOne({ correo: usuario.correo });
+async function getUsuarioMongo(usuario) {
+    return await Usuario.findOne({ cedula: usuario }, { password: 0 });
 }
 
 async function crearUsuarioMongo(user) {
@@ -10,4 +10,4 @@ async function crearUsuarioMongo(user) {
     return await Usuario.create(user);
 }
 
-export { crearUsuarioMongo, getUsuario }
+export { crearUsuarioMongo, getUsuarioMongo }

@@ -1,11 +1,26 @@
 import express from 'express';
 const router = express.Router();
-import { crearUsuario } from './usuario.controller.js';
+import { crearUsuario, getUsuario } from './usuario.controller.js';
 
 
 
-router.get("/", (req, res) => {
-    res.send("usuario API");
+
+router.get("/:id", async (req, res) => {
+
+    const id = req.params.id;
+    try {
+        res.status(200).json(await getUsuario(id));
+
+
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        })
+
+    }
+
+
+
 });
 
 router.post("/", async (req, res) => {

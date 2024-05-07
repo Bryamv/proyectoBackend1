@@ -1,4 +1,4 @@
-import { getUsuario } from "../usuario/usuario.actions.js";
+import { getUsuarioMongo } from "../usuario/usuario.actions.js";
 import { verificarPassword } from "./login.actions.js";
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
@@ -10,7 +10,7 @@ async function logUser(usuario) {
         throw new Error("Login error: Correo y Contraseña son requeridos");
     }
 
-    const usuarioExistente = await getUsuario(usuario);
+    const usuarioExistente = await getUsuarioMongo(usuario);
     const { password } = usuario;
 
     if (!usuarioExistente || ! await verificarPassword(password, usuarioExistente.password)) {
