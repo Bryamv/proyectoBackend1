@@ -1,14 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import { crearUsuario, getUsuario, updateUsuario } from './usuario.controller.js';
+import { crearUsuario, getUsuario, updateUsuario, deleteUsuario } from './usuario.controller.js';
 import { validarToken } from '../auth/login.actions.js';
 
 
-const obtenerUsuario = async (req, res) => {
+const obtener = async (req, res) => {
 
-    const id = req.params.id;
+    const cedula = req.params.cedula;
     try {
-        res.status(200).json(await getUsuario(id));
+        res.status(200).json(await getUsuario(cedula));
 
 
     } catch (error) {
@@ -22,7 +22,7 @@ const obtenerUsuario = async (req, res) => {
 
 }
 
-const createUsuario = async (req, res) => {
+const crear = async (req, res) => {
     try {
 
         const { cedula } = await crearUsuario(req.body);
@@ -41,14 +41,7 @@ const createUsuario = async (req, res) => {
 
 }
 
-router.get("/:id", obtenerUsuario);
-
-router.post("/", createUsuario);
-
-//autentica con jwt bearer token
-
-
-router.patch("/:cedula", validarToken, async (req, res) => {
+const actualizar = async (req, res) => {
     try {
         const cedula = req.params.cedula;
         await updateUsuario(cedula, req.body);
@@ -61,7 +54,31 @@ router.patch("/:cedula", validarToken, async (req, res) => {
         })
 
     }
-})
+}
+
+const eliminar = async (req, res) => {
+    try {
+        await deleteUsuario(req.params.cedula);
+        res.status(200).json({
+            mensaje: `Usuario con cedula ${req.params.cedula} eliminado con éxito 🎉`
+        })
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        })
+
+    }
+}
+
+
+router.get("/:cedula", obtener);
+router.post("/", crear);
+router.patch("/:cedula", validarToken, actualizar)
+router.delete("/:cedula", validarToken, eliminar)
+
+//autentica con jwt bearer token
+
+
 
 
 

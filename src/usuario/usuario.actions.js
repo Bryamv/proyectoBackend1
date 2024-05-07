@@ -3,7 +3,7 @@ import Usuario from './usuario.model.js';
 
 async function getUsuarioMongo(cedula) {
 
-    return await Usuario.findOne({ cedula }, { password: 0 });
+    return await Usuario.findOne({ cedula: cedula }, { password: 0 });
 
 
 }
@@ -16,4 +16,7 @@ async function updateUsuarioMongo(cedula, usuario) {
     return await Usuario.findOneAndUpdate
         ({ cedula }, { $set: usuario });
 }
-export { crearUsuarioMongo, getUsuarioMongo, updateUsuarioMongo }
+async function deleteUsuarioMongo(cedula) {
+    return await Usuario.findOneAndUpdate({ cedula }, { $set: { activo: false } });
+}
+export { crearUsuarioMongo, getUsuarioMongo, updateUsuarioMongo, deleteUsuarioMongo }
