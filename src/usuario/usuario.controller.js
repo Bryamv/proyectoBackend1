@@ -8,18 +8,14 @@ async function getUsuario(usuario) {
     return usuarioExistente;
 }
 
-
-
 async function crearUsuario(usuario) {
-    const usuarioExistente = await getUsuario(usuario);
+    const usuarioExistente = await getUsuarioMongo({cedula: usuario.cedula});
 
     if (usuarioExistente) {
-        //console.log("El usuario ya existe");
-        console.log(usuarioExistente);
+       
         throw new Error("El usuario ya existe");
     }
-
-
+    
     return await crearUsuarioMongo(usuario);
 
 }

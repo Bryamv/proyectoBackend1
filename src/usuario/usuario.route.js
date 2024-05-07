@@ -3,9 +3,7 @@ const router = express.Router();
 import { crearUsuario, getUsuario } from './usuario.controller.js';
 
 
-
-
-router.get("/:id", async (req, res) => {
+const obtenerUsuario = async (req, res) => {
 
     const id = req.params.id;
     try {
@@ -21,9 +19,9 @@ router.get("/:id", async (req, res) => {
 
 
 
-});
+}
 
-router.post("/", async (req, res) => {
+const createUsuario = async (req, res) => {
 
     try {
 
@@ -41,7 +39,11 @@ router.post("/", async (req, res) => {
 
 
 
-});
+}
+
+router.get("/:id", obtenerUsuario);
+
+router.post("/",createUsuario);
 
 
 

@@ -2,7 +2,13 @@
 import Usuario from './usuario.model.js';
 
 async function getUsuarioMongo(usuario) {
-    return await Usuario.findOne({ cedula: usuario }, { password: 0 });
+    try {
+        return await Usuario.findOne({ cedula: usuario }, { password: 0 });
+
+    } catch (error) {
+        console.log(error)
+
+    }
 }
 
 async function crearUsuarioMongo(user) {
