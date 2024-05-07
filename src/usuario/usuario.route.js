@@ -22,7 +22,6 @@ const obtenerUsuario = async (req, res) => {
 }
 
 const createUsuario = async (req, res) => {
-
     try {
 
         await crearUsuario(req.body);
@@ -44,6 +43,8 @@ const createUsuario = async (req, res) => {
 router.get("/:id", obtenerUsuario);
 
 router.post("/",createUsuario);
+
+
 
 
 

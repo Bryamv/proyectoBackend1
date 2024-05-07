@@ -1,19 +1,20 @@
-import { getUsuarioMongo } from "../usuario/usuario.actions.js";
-import { verificarPassword } from "./login.actions.js";
+//import { getUsuarioMongo } from "../usuario/usuario.actions.js";
+import { verificarPassword, buscarUsuario } from "./login.actions.js";
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
 dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
-async function logUser(usuario) {
-    if (!usuario.correo || !usuario.password) {
+async function logUser({ correo, password }) {
+    if (!correo || !password) {
         throw new Error("Login error: Correo y Contraseña son requeridos");
     }
 
-    const usuarioExistente = await getUsuarioMongo(usuario);
-    const { password } = usuario;
+    const usuarioExistente = await buscarUsuario(correo);
+    
+    const { password: hash } = usuarioExistente;
 
-    if (!usuarioExistente || ! await verificarPassword(password, usuarioExistente.password)) {
+    if (!usuarioExistente || ! await verificarPassword(password, hash)) {
         throw new Error("Login error: Correo o Contraseña incorrecta");
     }
 
@@ -24,7 +25,7 @@ async function logUser(usuario) {
         { expiresIn: '1h' } // Configura la expiración del token
     );
 
-    return { token, correo: usuario.correo };
+    return { token, correo: usuarioExistente.correo, cedula: usuarioExistente.cedula };
 
 
 }
