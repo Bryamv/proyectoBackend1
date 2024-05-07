@@ -1,19 +1,19 @@
 
 import Usuario from './usuario.model.js';
 
-async function getUsuarioMongo(usuario) {
-    try {
-        return await Usuario.findOne({ cedula: usuario }, { password: 0 });
+async function getUsuarioMongo(cedula) {
 
-    } catch (error) {
-        console.log(error)
+    return await Usuario.findOne({ cedula }, { password: 0 });
 
-    }
+
 }
 
-async function crearUsuarioMongo(user) {
-    //const user = { ...user, password: argon2d.hash(user.password)}
-    return await Usuario.create(user);
+async function crearUsuarioMongo(usuario) {
+    return await Usuario.create(usuario);
 }
 
-export { crearUsuarioMongo, getUsuarioMongo }
+async function updateUsuarioMongo(cedula, usuario) {
+    return await Usuario.findOneAndUpdate
+        ({ cedula }, { $set: usuario });
+}
+export { crearUsuarioMongo, getUsuarioMongo, updateUsuarioMongo }

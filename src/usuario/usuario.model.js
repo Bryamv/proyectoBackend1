@@ -7,6 +7,8 @@ const usuarioSchema = new mongoose.Schema({
     correo: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     direccion: { type: String, required: true },
+    activo: { type: Boolean, default: true }
+
 },
     {
         versionKey: false,

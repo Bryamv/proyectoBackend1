@@ -7,9 +7,9 @@ router.post("/", async (req, res) => {
     try {
         const { token, correo } = await logUser(req.body);
         res.status(200).json({
-
             mensaje: `login de ${correo} exitoso 👍`,
-            token
+            token,
+           
         });
 
     } catch (error) {

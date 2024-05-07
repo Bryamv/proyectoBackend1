@@ -7,7 +7,8 @@ const libroSchema = new mongoose.Schema({
     editorial: { type: String },
     autor: { type: String },
     precio: { type: mongoose.Types.Decimal128 },
-    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true }
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
+    activo: { type: Boolean, default: true }
 },
     {
         versionKey: false,
