@@ -71,7 +71,7 @@ const eliminar = async (req, res) => {
 }
 
 
-router.get("/:cedula", obtener);
+router.get("/:cedula", validarToken, obtener);
 router.post("/", crear);
 router.patch("/:cedula", validarToken, actualizar)
 router.delete("/:cedula", validarToken, eliminar)
