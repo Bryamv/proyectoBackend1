@@ -6,7 +6,8 @@ const libroSchema = new mongoose.Schema({
     fechaPublicacion: { type: Date },
     editorial: { type: String },
     autor: { type: String },
-    precio: { type: mongoose.Types.Decimal128 }
+    precio: { type: mongoose.Types.Decimal128 },
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true }
 });
 
 const Libro = mongoose.model('Libro', libroSchema);
