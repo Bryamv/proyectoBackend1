@@ -1,11 +1,14 @@
-import { crearUsuarioMongo } from "./usuario.actions.js";
+import { crearUsuarioMongo, getUsuario } from "./usuario.actions.js";
+
 async function crearUsuario(usuario) {
-    const usuarioExistente = await Usuario.findOne({ email: usuario.email });
+    const usuarioExistente = await getUsuario(usuario);
 
     if (usuarioExistente) {
+        //console.log("El usuario ya existe");
+        console.log(usuarioExistente);
         throw new Error("El usuario ya existe");
     }
-    
+
 
     return await crearUsuarioMongo(usuario);
 

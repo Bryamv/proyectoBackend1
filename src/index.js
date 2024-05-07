@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import rutasUsuario from "./usuario/usuario.route.js";
 import mongoose from "mongoose";
+import Login from './auth/login.route.js'
+
+
 app.use(express.json());
 app.use(cors());
 
@@ -17,6 +20,7 @@ app.get("/", (req, res) => {
 app.use("/usuario", rutasUsuario);
 
 //Fin de rutas de la API de usuario
+app.use("/login", Login);
 
 
 const port = process.env.PORT || 3000;
