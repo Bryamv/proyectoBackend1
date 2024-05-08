@@ -21,13 +21,12 @@ async function validarToken(req, res, next) {
             const bearerToken = bearer[1];
             req.token = bearerToken;
 
-            // Verificar el token
+            
             const decoded = jwt.verify(req.token, process.env.SECRET_KEY);
             req.usuario = decoded;
             console.log("Token válido")
-            next(); // Llamar a next() solo si el token es válido
+            next(); 
         } else {
-            // Si no hay token, devolver un error 401
             return res.status(401).json({ mensaje: "No se proporcionó token" });
         }
     } catch (error) {
