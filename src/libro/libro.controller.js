@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { getUsuario } from '../usuario/usuario.controller.js';
-import { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo } from './libro.actions.js';
+import { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo, updateLibroMongo } from './libro.actions.js';
 dotenv.config();
 async function crearLibro(token, libro) {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
@@ -28,8 +28,17 @@ async function obtenerLibro(id) {
 
 }
 async function obtenerLibrosFilter(filtros) {
-    return await obtenerLibrosMongo(filtros);
+    const libros = await obtenerLibrosMongo(filtros);
+    if (libros.length === 0) {
+        throw new Error("No se encontraron libros");
+    }
+    return obtenerLibrosMongo;
+
+}
+const updateLibro = async (id, cambios) => {
+    await obtenerLibro(id);
+    return await updateLibroMongo(id, cambios);
 
 }
 
-export { crearLibro, obtenerLibro, obtenerLibrosFilter };
+export { crearLibro, obtenerLibro, obtenerLibrosFilter, updateLibro };

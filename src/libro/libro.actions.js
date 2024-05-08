@@ -5,10 +5,17 @@ async function crearLibroMongo(usuario, libro) {
 }
 async function obtenerLibroMongo(id) {
 
-
     return await Libro.findById(id);
 }
 async function obtenerLibrosMongo(filtros) {
     return await Libro.find(filtros);
 }
-export { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo };
+async function updateLibroMongo(id, cambios) {
+    return await Libro.findByIdAndUpdate(
+        id,
+        cambios,
+        { new: true }
+
+    )
+}
+export { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo, updateLibroMongo };
