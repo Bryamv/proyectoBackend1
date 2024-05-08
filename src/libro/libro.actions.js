@@ -3,4 +3,9 @@ async function crearLibroMongo(usuario, libro) {
 
     return await Libro.create({ ...libro, usuario: usuario._id });
 }
-export { crearLibroMongo };
+async function obtenerLibroMongo(id) {
+    
+
+    return await Libro.findById(id);
+}
+export { crearLibroMongo, obtenerLibroMongo };
