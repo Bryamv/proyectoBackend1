@@ -8,14 +8,16 @@ async function obtenerLibroMongo(id) {
     return await Libro.findById(id);
 }
 async function obtenerLibrosMongo(filtros) {
-    return await Libro.find(filtros);
+    return await Libro.find({ ...filtros, activo: true });
 }
 async function updateLibroMongo(id, cambios) {
     return await Libro.findByIdAndUpdate(
         id,
         cambios,
         { new: true }
-
     )
 }
-export { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo, updateLibroMongo };
+async function deleteLibroMongo(id) {
+    return await Libro.findOneAndUpdate({ _id: id }, { $set: { activo: false } });
+}
+export { crearLibroMongo, obtenerLibroMongo, obtenerLibrosMongo, updateLibroMongo, deleteLibroMongo };

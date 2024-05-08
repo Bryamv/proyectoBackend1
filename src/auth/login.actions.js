@@ -21,11 +21,11 @@ async function validarToken(req, res, next) {
             const bearerToken = bearer[1];
             req.token = bearerToken;
 
-            
+
             const decoded = jwt.verify(req.token, process.env.SECRET_KEY);
             req.usuario = decoded;
             console.log("Token válido")
-            next(); 
+            next();
         } else {
             return res.status(401).json({ mensaje: "No se proporcionó token" });
         }
@@ -33,4 +33,10 @@ async function validarToken(req, res, next) {
         return res.status(401).json({ mensaje: "Token inválido" });
     }
 }
-export { verificarPassword, buscarUsuario, validarToken };
+
+async function obtenerUsuarioToken(token) {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const usuario = decodedToken.cedula;
+    return usuario
+}
+export { verificarPassword, buscarUsuario, validarToken, obtenerUsuarioToken };

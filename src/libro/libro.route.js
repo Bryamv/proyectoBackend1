@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { validarToken } from '../auth/login.actions.js';
-import { crearLibro, obtenerLibro, obtenerLibrosFilter, updateLibro } from './libro.controller.js';
+import { crearLibro, obtenerLibro, obtenerLibrosFilter, updateLibro, deleteLibro } from './libro.controller.js';
 
 
 const crear = async (req, res) => {
@@ -36,6 +36,7 @@ const obtenerLibros = async (req, res) => {
     try {
         const filtros = req.query;
         const libros = await obtenerLibrosFilter(filtros);
+        console.log(libros);
 
         res.status(200).json({ libros: libros, total: libros.length });
 
@@ -64,6 +65,19 @@ const actualizar = async (req, res) => {
 }
 
 const eliminar = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        await deleteLibro(id, req.body);
+        res.status(200).json({
+            mensaje: `Libro  eliminado con éxito 🎉`
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        })
+    }
 }
 
 router.get("/:id", obtener)
