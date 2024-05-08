@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { validarToken } from '../auth/login.actions.js';
-import { crearLibro, obtenerLibro } from './libro.controller.js';
+import { crearLibro, obtenerLibro, obtenerLibrosFilter } from './libro.controller.js';
 
 
 const crear = async (req, res) => {
@@ -32,12 +32,12 @@ const obtener = async (req, res) => {
     }
 }
 
-
-router.get("/:id", obtener)
-router.get("/", (req, res) => {
-
+const obtenerLibros = async (req, res) => {
     try {
-        
+        const filtros = req.query;
+        const libros = await obtenerLibrosFilter(filtros);
+        res.status(200).json({ libros: libros, total: libros.length });
+
 
     } catch (error) {
         res.status(400).json({
@@ -45,7 +45,10 @@ router.get("/", (req, res) => {
         })
     }
 }
-);
+
+
+router.get("/:id", obtener)
+router.get("/", obtenerLibros)
 router.post("/", validarToken, crear);
 
 
