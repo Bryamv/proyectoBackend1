@@ -10,6 +10,9 @@ const pedidoSchema = new mongoose.Schema({
             libro: { type: mongoose.Schema.Types.ObjectId, ref: 'Libro', required: true }
         }
     ]
+}, {
+    versionKey: false,
+    timestamps: true
 });
 
 const Pedido = mongoose.model('Pedido', pedidoSchema);
