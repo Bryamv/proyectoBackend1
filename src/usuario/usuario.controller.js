@@ -2,15 +2,13 @@ import { crearUsuarioMongo, getUsuarioMongo, updateUsuarioMongo, deleteUsuarioMo
 
 async function getUsuario(cedula) {
     const usuarioExistente = await getUsuarioMongo(cedula);
-    if (usuarioExistente && !usuarioExistente.activo) {
+    /* if (usuarioExistente && !usuarioExistente.activo) {
         throw new Error("El usuario ya existe pero no está activo.");
-    }
-    if (!usuarioExistente) {
+    } */
+    if (!usuarioExistente || !usuarioExistente.activo) {
         throw new Error("El usuario no existe");
     }
-    //sin password
 
-    //delete usuarioExistente.password;
     return usuarioExistente;
 }
 

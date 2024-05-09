@@ -9,11 +9,11 @@ const libroSchema = new mongoose.Schema({
     precio: { type: mongoose.Types.Decimal128, required: true },
     usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
     activo: { type: Boolean, default: true },
-    pedidos: [
+   /*  pedidos: [
         {
             pedido: { type: mongoose.Schema.Types.ObjectId, ref: 'Pedido', required: true }
         }
-    ]
+    ] */
 },
     {
         versionKey: false,

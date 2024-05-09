@@ -8,6 +8,7 @@ import rutasUsuario from "./usuario/usuario.route.js";
 import mongoose from "mongoose";
 import Login from './auth/login.route.js'
 import rutasLibro from "./libro/libro.route.js";
+import rutasPedido from "./pedido/pedido.route.js";
 
 app.use(express.json());
 app.use(cors());
@@ -23,6 +24,8 @@ app.use("/usuario", rutasUsuario);
 app.use("/login", Login);
 
 app.use("/libro", rutasLibro);
+
+app.use("/pedido", rutasPedido);
 
 const port = process.env.PORT || 3000;
 
