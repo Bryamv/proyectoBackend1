@@ -21,7 +21,7 @@ async function crearPedido(cedula, { libros }) {
     const total = await calcularTotal(libros);
 
     const librosFormateados = libros.map(libro => ({ libro: libro }));
-
+    console.log(librosFormateados);
 
     return  await crearPedidoMongo(usuario, librosFormateados, total);
 
