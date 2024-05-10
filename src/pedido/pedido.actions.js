@@ -9,4 +9,8 @@ async function crearPedidoMongo(usuario, libros, total) {
 async function obtenerPedidosMongo() {
     return Pedido.find({ activo: true });
 }
-export { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo }
+
+async function eliminarPedidoMongo(id) {
+    return Pedido.findByIdAndUpdate(id, { activo: false });
+}
+export { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo, eliminarPedidoMongo }

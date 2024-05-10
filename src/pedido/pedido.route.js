@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { obtenerUsuarioToken, validarToken } from '../auth/login.actions.js';
-import { crearPedido, obtenerPedido, obtenerPedidos } from './pedido.controller.js';
+import { crearPedido, obtenerPedido, obtenerPedidos, eliminarPedido } from './pedido.controller.js';
 
 
 const obtener = async (req, res) => {
@@ -59,7 +59,7 @@ const eliminar = async (req, res) => {
         await eliminarPedido(id);
 
         res.status(200).json({
-            mensaje: "Eliminar pedido"
+            mensaje: `Pedido ${id} eliminado con éxito 🎉`
         });
     } catch (error) {
         res.status(400).json({

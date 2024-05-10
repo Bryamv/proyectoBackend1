@@ -1,11 +1,11 @@
 import { obtenerLibroMongo } from "../libro/libro.actions.js";
 import { getUsuario } from "../usuario/usuario.controller.js";
-import { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo } from "./pedido.actions.js";
+import { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo, eliminarPedidoMongo } from "./pedido.actions.js";
 
 async function obtenerPedido(id) {
     const pedido = await obtenerPedidoMongo(id);
 
-    if (!pedido) {
+    if (!pedido || !pedido.activo) {
         throw new Error("Pedido no encontrado");
     }
     return pedido;
@@ -44,7 +44,15 @@ async function crearPedido(cedula, { libros }) {
 }
 
 async function eliminarPedido(id) {
+    const pedido = await obtenerPedido(id);
+    if (!pedido) {
+        throw new Error("Pedido no encontrado");
+    }
+    return await eliminarPedidoMongo(id)
+
+
+
 
 }
 
-export { crearPedido, obtenerPedido, obtenerPedidos }
+export { crearPedido, obtenerPedido, obtenerPedidos, eliminarPedido }
