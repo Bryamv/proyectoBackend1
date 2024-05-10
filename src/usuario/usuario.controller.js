@@ -25,8 +25,12 @@ async function crearUsuario(usuario) {
 async function updateUsuario(cedula, usuario) {
 
     const usuarioExistente = await getUsuarioMongo(cedula);
+
     if (!usuarioExistente) {
         throw new Error("El usuario no existe");
+    }
+    if (cedula !== usuario.cedula) {
+        throw new Error("La cedula no puede ser modificada");
     }
     return await updateUsuarioMongo(cedula, usuario);
 }
