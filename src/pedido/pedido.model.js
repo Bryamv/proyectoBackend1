@@ -5,6 +5,7 @@ const pedidoSchema = new mongoose.Schema({
     estado: { type: String, enum: ['en progreso', 'completado', 'cancelado'], default: 'en progreso', required: true },
     //fecha: { type: Date, default: Date.now, required: true },
     total: { type: mongoose.Types.Decimal128, required: true },
+    activo: { type: Boolean, default: true },
     libros: [
         {
             _id: false,

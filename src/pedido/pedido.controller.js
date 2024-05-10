@@ -1,6 +1,22 @@
 import { obtenerLibroMongo } from "../libro/libro.actions.js";
 import { getUsuario } from "../usuario/usuario.controller.js";
-import { crearPedidoMongo } from "./pedido.actions.js";
+import { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo } from "./pedido.actions.js";
+
+async function obtenerPedido(id) {
+    const pedido = await obtenerPedidoMongo(id);
+
+    if (!pedido) {
+        throw new Error("Pedido no encontrado");
+    }
+    return pedido;
+
+}
+
+async function obtenerPedidos() {
+    const pedidos = await obtenerPedidosMongo();
+    return pedidos;
+}
+
 
 async function calcularTotal(libros) {
     //cada libro debo buscarlo en la bd y sumar su precio
@@ -23,8 +39,12 @@ async function crearPedido(cedula, { libros }) {
     const librosFormateados = libros.map(libro => ({ libro: libro }));
     console.log(librosFormateados);
 
-    return  await crearPedidoMongo(usuario, librosFormateados, total);
+    return await crearPedidoMongo(usuario, librosFormateados, total);
 
 }
 
-export { crearPedido }
+async function eliminarPedido(id) {
+
+}
+
+export { crearPedido, obtenerPedido, obtenerPedidos }

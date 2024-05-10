@@ -1,13 +1,34 @@
 import express from 'express';
 const router = express.Router();
 import { obtenerUsuarioToken, validarToken } from '../auth/login.actions.js';
-import { crearPedido } from './pedido.controller.js';
+import { crearPedido, obtenerPedido, obtenerPedidos } from './pedido.controller.js';
 
 
 const obtener = async (req, res) => {
-    res.status(200).json({
-        mensaje: "Obtener pedido"
-    });
+    try {
+        const id = req.params.id;
+        const pedido = await obtenerPedido(id);
+        res.status(200).json(pedido);
+
+
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        });
+
+    }
+
+}
+async function obtenerTodos(req, res) {
+    try {
+        const pedidos = await obtenerPedidos();
+        res.status(200).json({ pedidos, total: pedidos.length });
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        });
+
+    }
 }
 const crear = async (req, res) => {
     try {
@@ -31,15 +52,28 @@ const actualizar = async (req, res) => {
 }
 
 const eliminar = async (req, res) => {
-    res.status(200).json({
-        mensaje: "Eliminar pedido"
-    });
+
+
+    try {
+        const id = req.params.id;
+        await eliminarPedido(id);
+
+        res.status(200).json({
+            mensaje: "Eliminar pedido"
+        });
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        });
+    }
 }
 
-router.get("/", validarToken, obtener);
+router.get("/:id", validarToken, obtener);
+router.get("/", validarToken, obtenerTodos);
+
 router.post("/", validarToken, crear);
-router.patch("/", validarToken, actualizar);
-router.delete("/", validarToken, eliminar);
+router.patch("/:id", validarToken, actualizar);
+router.delete("/:id", validarToken, eliminar);
 
 
 
