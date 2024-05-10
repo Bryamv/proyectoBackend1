@@ -39,4 +39,9 @@ async function obtenerUsuarioToken(token) {
     const usuario = decodedToken.cedula;
     return usuario
 }
-export { verificarPassword, buscarUsuario, validarToken, obtenerUsuarioToken };
+async function obtenerIdToken(token) {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const usuario = decodedToken.userId;
+    return usuario
+}
+export { verificarPassword, buscarUsuario, validarToken, obtenerUsuarioToken,obtenerIdToken };

@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import { obtenerUsuarioToken, validarToken } from '../auth/login.actions.js';
-import { crearPedido, obtenerPedido, obtenerPedidos, eliminarPedido } from './pedido.controller.js';
+import { obtenerUsuarioToken, validarToken, obtenerIdToken } from '../auth/login.actions.js';
+import { crearPedido, obtenerPedido, obtenerPedidos, eliminarPedido,actualizarPedido } from './pedido.controller.js';
 
 
 const obtener = async (req, res) => {
@@ -46,9 +46,20 @@ const crear = async (req, res) => {
 }
 
 const actualizar = async (req, res) => {
-    res.status(200).json({
-        mensaje: "Actualizar pedido"
-    });
+    try {
+        const id = req.params.id;
+        const persona = await obtenerIdToken(req.headers["authorization"].split(" ")[1]);
+        
+        await actualizarPedido(persona,id, req.body);
+
+        res.status(200).json({
+            mensaje: `Pedido ${id} actualizado con éxito 🎉`
+        });
+    } catch (error) {
+        res.status(400).json({
+            mensaje: error.message
+        });
+    }
 }
 
 const eliminar = async (req, res) => {
@@ -70,7 +81,6 @@ const eliminar = async (req, res) => {
 
 router.get("/:id", validarToken, obtener);
 router.get("/", validarToken, obtenerTodos);
-
 router.post("/", validarToken, crear);
 router.patch("/:id", validarToken, actualizar);
 router.delete("/:id", validarToken, eliminar);

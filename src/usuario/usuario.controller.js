@@ -2,10 +2,11 @@ import { crearUsuarioMongo, getUsuarioMongo, updateUsuarioMongo, deleteUsuarioMo
 
 async function getUsuario(cedula) {
     const usuarioExistente = await getUsuarioMongo(cedula);
+    console.log(usuarioExistente);
     /* if (usuarioExistente && !usuarioExistente.activo) {
         throw new Error("El usuario ya existe pero no está activo.");
     } */
-    if (!usuarioExistente || !usuarioExistente.activo) {
+    if (!usuarioExistente && !usuarioExistente.activo) {
         throw new Error("El usuario no existe");
     }
 
@@ -13,7 +14,7 @@ async function getUsuario(cedula) {
 }
 
 async function crearUsuario(usuario) {
-    await getUsuario(usuario.cedula);
+    //await getUsuario(usuario.cedula);
 
     const usuarioCreado = await crearUsuarioMongo(usuario);
 

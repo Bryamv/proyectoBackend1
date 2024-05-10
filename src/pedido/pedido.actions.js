@@ -1,4 +1,6 @@
 import Pedido from "./pedido.model.js";
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 async function obtenerPedidoMongo(id) {
     return Pedido.findById(id);
 }
@@ -13,4 +15,19 @@ async function obtenerPedidosMongo() {
 async function eliminarPedidoMongo(id) {
     return Pedido.findByIdAndUpdate(id, { activo: false });
 }
-export { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo, eliminarPedidoMongo }
+
+async function actualizarPedidoMongo(id, estado) {
+    // Asegurarse de que id es un ObjectId válido
+    const objectId = new ObjectId(id);
+
+    // Actualizar el pedido en la base de datos
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+        objectId,
+        { $set: { estado: estado } },
+        { new: true }  // Devuelve el documento actualizado
+    );
+
+    return pedidoActualizado;
+}
+
+export { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo, eliminarPedidoMongo, actualizarPedidoMongo }
