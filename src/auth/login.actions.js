@@ -20,8 +20,6 @@ async function validarToken(req, res, next) {
             const bearer = bearerHeader.split(' ');
             const bearerToken = bearer[1];
             req.token = bearerToken;
-
-
             const decoded = jwt.verify(req.token, process.env.SECRET_KEY);
             req.usuario = decoded;
             console.log("Token válido")

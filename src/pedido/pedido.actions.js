@@ -5,8 +5,8 @@ async function obtenerPedidoMongo(id) {
     return Pedido.findById(id);
 }
 
-async function crearPedidoMongo(usuario, libros, total) {
-    return await Pedido.create({ libros, usuario: usuario._id, total });
+async function crearPedidoMongo(usuario,vendedor, libros, total) {
+    return await Pedido.create({ libros, usuario: usuario._id,vendedor, total });
 }
 async function obtenerPedidosMongo() {
     return Pedido.find({ activo: true });

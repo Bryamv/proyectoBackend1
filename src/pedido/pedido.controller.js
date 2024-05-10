@@ -34,22 +34,31 @@ async function calcularTotal(libros) {
 }
 
 async function crearPedido(cedula, { libros }) {
-
     const usuario = await getUsuario(cedula);
     const total = await calcularTotal(libros);
-    const {_id:dueño} = await obtenerLibroMongo(libros[0]);
+    const { usuario: dueño } = await obtenerLibroMongo(libros[0]);
 
-    //continuar desde aqui para verificar que el dueño no sea el mismo que el usuario y ademas todos los libros le pertenezcan al mismo dueño
+    // Verificar que el dueño no sea el mismo que el usuario
     if (dueño.toString() === usuario._id.toString()) {
         throw new Error("No puedes comprar tus propios libros");
     }
-    
+
+    // Verificar que todos los libros pertenezcan al mismo dueño
+    for (const idLibro of libros) {
+        const { usuario: dueñoActual } = await obtenerLibroMongo(idLibro);
+        if (!dueño.equals(dueñoActual)) {
+            throw new Error("No todos los libros pertenecen al mismo dueño");
+        }
+    }
+
+    // Formatear los libros para el pedido
     const librosFormateados = libros.map(libro => ({ libro: libro }));
     //console.log(librosFormateados);
 
-    return await crearPedidoMongo(usuario, librosFormateados, total);
-
+    // Crear el pedido en la base de datos
+    return await crearPedidoMongo(usuario,dueño, librosFormateados, total);
 }
+
 
 async function actualizarPedido(persona, id, { estado }) {
     const pedido = await obtenerPedido(id);
