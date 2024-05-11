@@ -7,6 +7,7 @@ const pedidoSchema = new mongoose.Schema({
     //fecha: { type: Date, default: Date.now, required: true },
     total: { type: mongoose.Types.Decimal128, required: true },
     activo: { type: Boolean, default: true },
+
     libros: [
         {
             _id: false,

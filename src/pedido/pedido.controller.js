@@ -2,6 +2,7 @@ import { obtenerLibroMongo } from "../libro/libro.actions.js";
 import { obtenerLibro } from "../libro/libro.controller.js";
 import { getUsuario } from "../usuario/usuario.controller.js";
 import { crearPedidoMongo, obtenerPedidoMongo, obtenerPedidosMongo, eliminarPedidoMongo, actualizarPedidoMongo } from "./pedido.actions.js";
+import mongoose from "mongoose";
 
 async function obtenerPedido(id) {
     const pedido = await obtenerPedidoMongo(id);
@@ -63,17 +64,22 @@ async function crearPedido(cedula, { libros }) {
 async function actualizarPedido(personaId, idPedido, { estado }) {
     const pedido = await obtenerPedido(idPedido);
 
-    // Convertir personaId (string) a ObjectId para comparación
-    const idPersona = mongoose.Types.ObjectId(personaId);
+    const { usuario: comprador, vendedor } = pedido;
+
+    const compradorId = comprador.toString();
+    const vendedorId = vendedor.toString();
+
 
     // Verificar si la persona es la que realizó el pedido
-    if (pedido.usuario._id.equals(idPersona)) {
+    if (personaId === compradorId) {
         // Si es el usuario del pedido y el estado no es "cancelado", error
         if (estado.toLowerCase() !== "cancelado") {
             throw new Error("Solo puedes cambiar el estado del pedido a 'cancelado'.");
         }
-    } else if (pedido.vendedor._id.equals(idPersona)) {
-        return await actualizarPedidoMongo(idPedido, { estado });
+        return await actualizarPedidoMongo(idPedido, estado);
+    } else if (personaId === vendedorId) {
+
+        return await actualizarPedidoMongo(idPedido, estado);
         // La persona es el vendedor, puede hacer cualquier cambio
         // No hay restricciones aquí
     } else {
