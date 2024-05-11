@@ -56,37 +56,32 @@ async function crearPedido(cedula, { libros }) {
     //console.log(librosFormateados);
 
     // Crear el pedido en la base de datos
-    return await crearPedidoMongo(usuario,dueño, librosFormateados, total);
+    return await crearPedidoMongo(usuario, dueño, librosFormateados, total);
 }
 
 
-async function actualizarPedido(persona, id, { estado }) {
-    const pedido = await obtenerPedido(id);
-    const libro = pedido.libros[0].libro.toString();
-    console.log(persona)
+async function actualizarPedido(personaId, idPedido, { estado }) {
+    const pedido = await obtenerPedido(idPedido);
 
-    //console.log(idLibroString);
-    const { usuario } = await obtenerLibro(libro);
-    const usuarioString = usuario.toString();
-    //console.log(usuarioString);
-    //console.log(typeof persona);
+    // Convertir personaId (string) a ObjectId para comparación
+    const idPersona = mongoose.Types.ObjectId(personaId);
 
     // Verificar si la persona es la que realizó el pedido
-    if (pedido.usuario === persona) {
+    if (pedido.usuario._id.equals(idPersona)) {
         // Si es el usuario del pedido y el estado no es "cancelado", error
         if (estado.toLowerCase() !== "cancelado") {
             throw new Error("Solo puedes cambiar el estado del pedido a 'cancelado'.");
         }
+    } else if (pedido.vendedor._id.equals(idPersona)) {
+        return await actualizarPedidoMongo(idPedido, { estado });
+        // La persona es el vendedor, puede hacer cualquier cambio
+        // No hay restricciones aquí
     } else {
-        // Verificar si la persona es dueña de los libros
-        if (usuarioString !== persona) {
-            throw new Error("No tienes permiso para modificar este pedido.");
-        }
-        // Si es dueño de los libros, puede hacer cualquier cambio (sin restricciones aquí)
+        // Si no es ni el usuario ni el vendedor
+        throw new Error("No tienes permiso para modificar este pedido.");
     }
 
     // Actualizar el pedido en la base de datos
-    return await actualizarPedidoMongo(id, estado);
 }
 
 
