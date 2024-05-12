@@ -18,9 +18,7 @@ async function obtenerLibro(id) {
         throw new Error("Id inválido");
     }
     const libro = await obtenerLibroMongo(id);
-    if (libro && !libro.activo) {
-        throw new Error("El libro ya existe pero no está activo.");
-    }
+  
     if (!libro) {
         throw new Error("Libro no encontrado");
     }

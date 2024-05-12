@@ -14,11 +14,35 @@ async function obtenerPedido(id) {
 
 }
 
-async function obtenerPedidos() {
-    const pedidos = await obtenerPedidosMongo();
+async function obtenerPedidos({ fechainicio, fechafin, estado }) {
+    let filtro = {};
+    if ((!await esFechaValida(fechainicio) || !await esFechaValida(fechafin)) && fechainicio && fechafin) {
+        throw new Error('Una o ambas fechas no son válidas.');
+    }
+
+    // Validar que la fecha de inicio sea anterior a la fecha de fin
+    if (fechainicio && fechafin && new Date(fechainicio) > new Date(fechafin)) {
+        throw new Error('La fecha de inicio debe ser anterior a la fecha de fin.');
+    }
+
+    // Agregar las fechas al filtro si están definidas y válidas
+    if (fechainicio && fechafin) {
+        filtro.createdAt = {
+            $gte: new Date(fechainicio),
+            $lte: new Date(fechafin)
+        };
+    }
+    if (estado) {
+        filtro.estado = estado;
+    }
+
+    const pedidos = await obtenerPedidosMongo(filtro);
     return pedidos;
 }
-
+async function esFechaValida(fecha) {
+    // Verificar si es una fecha válida
+    return !isNaN(new Date(fecha).getTime());
+}
 
 async function calcularTotal(libros) {
     //cada libro debo buscarlo en la bd y sumar su precio

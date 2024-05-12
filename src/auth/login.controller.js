@@ -22,7 +22,7 @@ async function logUser({ correo, password }) {
     const token = jwt.sign(
         { userId: usuarioExistente._id, correo: usuarioExistente.correo, cedula: usuarioExistente.cedula }, // Payload del token
         SECRET_KEY,
-        { expiresIn: '1h' } // Configura la expiración del token
+        //{ expiresIn: '1h' } // Configura la expiración del token
     );
 
     return { token, correo: usuarioExistente.correo, cedula: usuarioExistente.cedula };

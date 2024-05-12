@@ -5,11 +5,11 @@ async function obtenerPedidoMongo(id) {
     return Pedido.findById(id);
 }
 
-async function crearPedidoMongo(usuario,vendedor, libros, total) {
-    return await Pedido.create({ libros, usuario: usuario._id,vendedor, total });
+async function crearPedidoMongo(usuario, vendedor, libros, total) {
+    return await Pedido.create({ libros, usuario: usuario._id, vendedor, total });
 }
-async function obtenerPedidosMongo() {
-    return Pedido.find({ activo: true });
+async function obtenerPedidosMongo(filtro = {}) {
+    return Pedido.find({ activo: true, ...filtro });
 }
 
 async function eliminarPedidoMongo(id) {
