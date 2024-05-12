@@ -8,7 +8,16 @@ async function obtenerLibroMongo(id) {
     return await Libro.findById(id);
 }
 async function obtenerLibrosMongo(filtros) {
-    return await Libro.find({ ...filtros, activo: true });
+    filtros.activo = true;
+    console.log(filtros);
+
+    if (filtros.mostrarInactivos) {
+        console.log("Mostrar inactivos");
+        delete filtros.mostrarInactivos;
+        delete filtros.activo;
+    }
+
+    return await Libro.find({ ...filtros });
 }
 async function updateLibroMongo(id, cambios) {
     return await Libro.findByIdAndUpdate(
