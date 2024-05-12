@@ -14,8 +14,9 @@ async function obtenerPedido(id) {
 
 }
 
-async function obtenerPedidos({ fechainicio, fechafin, estado }) {
+async function obtenerPedidos({ fechainicio, fechafin, estado, mostrarInactivos }) {
     let filtro = {};
+    filtro.activo = true;
     if ((!await esFechaValida(fechainicio) || !await esFechaValida(fechafin)) && fechainicio && fechafin) {
         throw new Error('Una o ambas fechas no son válidas.');
     }
@@ -34,6 +35,10 @@ async function obtenerPedidos({ fechainicio, fechafin, estado }) {
     }
     if (estado) {
         filtro.estado = estado;
+    }
+
+    if (mostrarInactivos) {
+        delete filtro.activo;
     }
 
     const pedidos = await obtenerPedidosMongo(filtro);

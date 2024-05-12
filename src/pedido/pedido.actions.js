@@ -9,7 +9,7 @@ async function crearPedidoMongo(usuario, vendedor, libros, total) {
     return await Pedido.create({ libros, usuario: usuario._id, vendedor, total });
 }
 async function obtenerPedidosMongo(filtro = {}) {
-    return Pedido.find({ activo: true, ...filtro });
+    return Pedido.find({ ...filtro });
 }
 
 async function eliminarPedidoMongo(id) {
